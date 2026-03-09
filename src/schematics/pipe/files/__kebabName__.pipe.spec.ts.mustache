@@ -1,0 +1,19 @@
+import { describe, it, expect, beforeAll } from 'bun:test';
+import { {{pascalName}}Pipe } from './{{kebabName}}.pipe';
+
+describe('{{pascalName}}Pipe', () => {
+  let pipe: {{pascalName}}Pipe;
+
+  beforeAll(() => {
+    pipe = new {{pascalName}}Pipe();
+  });
+
+  it('should be defined', () => {
+    expect(pipe).toBeDefined();
+  });
+
+  it('transform() should return the value unchanged by default', () => {
+    expect(pipe.transform('hello')).toBe('hello');
+    expect(pipe.transform(42)).toBe(42);
+  });
+});

@@ -1,0 +1,47 @@
+{
+  "name": "@nemesis-js/schematics",
+  "version": "0.1.0",
+  "description": "NemesisJS code generation schematics",
+  "schematics": {
+    "application": {
+      "description": "Create a new NemesisJS application",
+      "factory": "./src/schematics/application/index",
+      "aliases": ["app"]
+    },
+    "controller": {
+      "description": "Generate a controller class",
+      "factory": "./src/schematics/controller/index",
+      "aliases": ["co"]
+    },
+    "service": {
+      "description": "Generate a service class",
+      "factory": "./src/schematics/service/index",
+      "aliases": ["s"]
+    },
+    "module": {
+      "description": "Generate a module with controller and service",
+      "factory": "./src/schematics/module/index",
+      "aliases": ["mo"]
+    },
+    "resource": {
+      "description": "Generate a full CRUD resource (module + controller + service + DTOs)",
+      "factory": "./src/schematics/resource/index",
+      "aliases": ["res"]
+    },
+    "guard": {
+      "description": "Generate an authentication/authorization guard",
+      "factory": "./src/schematics/guard/index",
+      "aliases": ["gu"]
+    },
+    "pipe": {
+      "description": "Generate a validation/transformation pipe",
+      "factory": "./src/schematics/pipe/index",
+      "aliases": ["pi"]
+    },
+    "filter": {
+      "description": "Generate an exception filter",
+      "factory": "./src/schematics/filter/index",
+      "aliases": ["f"]
+    }
+  }
+}

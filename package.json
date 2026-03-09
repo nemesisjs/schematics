@@ -1,0 +1,39 @@
+{
+  "name": "@nemesis-js/schematics",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "NemesisJS code generation schematics — engine + all built-in schematics",
+  "author": "NemesisJS",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemesisjs/schematics.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "src",
+    "collection.json"
+  ],
+  "main": "./src/index.ts",
+  "exports": {
+    ".": {
+      "bun": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./collection.json": "./collection.json"
+  },
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target bun",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "mustache": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/mustache": "^4.2.5",
+    "typescript": "^5.7.0"
+  }
+}

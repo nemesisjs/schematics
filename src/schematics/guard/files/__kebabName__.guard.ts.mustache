@@ -1,0 +1,9 @@
+import type { CanActivate, ExecutionContext } from '@nemesis-js/common';
+
+export class {{pascalName}}Guard implements CanActivate {
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> {
+    // TODO: implement your guard logic here
+    // e.g. verify JWT token, check roles, etc.
+    return true;
+  }
+}

@@ -1,0 +1,37 @@
+import { Injectable } from '@nemesis-js/common';
+import type { Create{{pascalName}}Dto } from './dto/create-{{kebabName}}.dto';
+import type { Update{{pascalName}}Dto } from './dto/update-{{kebabName}}.dto';
+
+@Injectable()
+export class {{pascalName}}Service {
+  // In-memory store — replace with a real database in production.
+  private readonly items = new Map<string, Record<string, unknown>>();
+
+  create(dto: Create{{pascalName}}Dto): Record<string, unknown> {
+    const id = crypto.randomUUID();
+    const item = { ...dto, id };
+    this.items.set(id, item);
+    return item;
+  }
+
+  findAll(): Record<string, unknown>[] {
+    return Array.from(this.items.values());
+  }
+
+  findOne(id: string): Record<string, unknown> | undefined {
+    return this.items.get(id);
+  }
+
+  update(id: string, dto: Update{{pascalName}}Dto): Record<string, unknown> | undefined {
+    const existing = this.items.get(id);
+    if (!existing) return undefined;
+    const updated = { ...existing, ...dto, id };
+    this.items.set(id, updated);
+    return updated;
+  }
+
+  remove(id: string): { id: string; deleted: boolean } {
+    this.items.delete(id);
+    return { id, deleted: true };
+  }
+}

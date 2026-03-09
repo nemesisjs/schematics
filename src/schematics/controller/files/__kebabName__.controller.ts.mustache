@@ -1,0 +1,16 @@
+import { Controller, Get } from '@nemesis-js/common';
+import type { RequestContext } from '@nemesis-js/http';
+
+@Controller('/{{kebabName}}')
+export class {{pascalName}}Controller {
+  @Get('/')
+  findAll(ctx: RequestContext) {
+    return ctx.json({ message: '{{pascalName}} controller works!' });
+  }
+
+  @Get('/:id')
+  findOne(ctx: RequestContext) {
+    const id = ctx.getParam('id');
+    return ctx.json({ id });
+  }
+}

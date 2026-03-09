@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.tsbuildinfo
+.DS_Store
+bun.lockb
+coverage/
+.env
+.env.*
+!.env.example

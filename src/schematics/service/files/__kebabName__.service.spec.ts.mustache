@@ -1,0 +1,40 @@
+import { describe, it, expect, beforeAll } from 'bun:test';
+import { {{pascalName}}Service } from './{{kebabName}}.service';
+
+describe('{{pascalName}}Service', () => {
+  let service: {{pascalName}}Service;
+
+  beforeAll(() => {
+    service = new {{pascalName}}Service();
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  it('findAll() should return an array', () => {
+    expect(Array.isArray(service.findAll())).toBe(true);
+  });
+
+  it('findOne() should return an object with the given id', () => {
+    const result = service.findOne('test-id');
+    expect(result).toMatchObject({ id: 'test-id' });
+  });
+
+  it('create() should return a new object with an id', () => {
+    const result = service.create({ name: 'test' });
+    expect(result).toHaveProperty('id');
+    expect((result as Record<string, unknown>)['name']).toBe('test');
+  });
+
+  it('update() should merge the id with the provided data', () => {
+    const result = service.update('abc', { name: 'updated' });
+    expect((result as Record<string, unknown>)['id']).toBe('abc');
+    expect((result as Record<string, unknown>)['name']).toBe('updated');
+  });
+
+  it('remove() should return deleted: true', () => {
+    const result = service.remove('abc');
+    expect(result).toMatchObject({ id: 'abc', deleted: true });
+  });
+});

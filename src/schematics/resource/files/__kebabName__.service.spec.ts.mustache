@@ -1,0 +1,43 @@
+import { describe, it, expect, beforeAll } from 'bun:test';
+import { {{pascalName}}Service } from './{{kebabName}}.service';
+
+describe('{{pascalName}}Service', () => {
+  let service: {{pascalName}}Service;
+
+  beforeAll(() => {
+    service = new {{pascalName}}Service();
+  });
+
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+
+  it('findAll() should return an array', () => {
+    expect(Array.isArray(service.findAll())).toBe(true);
+  });
+
+  it('create() should return a new item with an id', () => {
+    const item = service.create({ name: 'Test Item' } as any);
+    expect(item).toHaveProperty('id');
+    expect(item['name']).toBe('Test Item');
+  });
+
+  it('findOne() should return the created item', () => {
+    const created = service.create({ name: 'Find Me' } as any);
+    const found = service.findOne(created['id'] as string);
+    expect(found).toMatchObject({ name: 'Find Me' });
+  });
+
+  it('update() should merge data with existing item', () => {
+    const created = service.create({ name: 'Old Name' } as any);
+    const updated = service.update(created['id'] as string, { name: 'New Name' } as any);
+    expect(updated?.['name']).toBe('New Name');
+  });
+
+  it('remove() should delete the item and return deleted: true', () => {
+    const created = service.create({ name: 'Delete Me' } as any);
+    const result = service.remove(created['id'] as string);
+    expect(result).toMatchObject({ deleted: true });
+    expect(service.findOne(created['id'] as string)).toBeUndefined();
+  });
+});
