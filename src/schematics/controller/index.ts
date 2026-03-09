@@ -40,7 +40,7 @@ export default function controllerFactory(ctx: SchematicContext): Rule[] {
     moduleUpdateRule(
       join(targetDir, 'src', kebabName),
       `${pascalName}Controller`,
-      `./${kebabName}.controller`,
+      `src/${kebabName}/${kebabName}.controller`,
       'controller',
     ),
   ];

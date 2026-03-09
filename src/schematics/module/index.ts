@@ -1,17 +1,21 @@
 /**
  * @nemesis-js/schematics - Module schematic
  *
- * Generates a self-contained feature module:
- *   src/<kebab>/
- *     <kebab>.module.ts       (controller + service pre-wired in @Module)
- *     <kebab>.controller.ts
- *     <kebab>.controller.spec.ts
- *     <kebab>.service.ts
- *     <kebab>.service.spec.ts
+ * Two modes controlled by `options.withFiles`:
  *
- * Then imports the new module into the nearest parent `*.module.ts`.
- * The controller and service templates already reference each other, so
- * no additional module-registration step is needed for them.
+ *   withFiles: true  (default)  → full feature module:
+ *     src/<kebab>/
+ *       <kebab>.module.ts         (controller + service pre-wired in @Module)
+ *       <kebab>.controller.ts
+ *       <kebab>.controller.spec.ts
+ *       <kebab>.service.ts
+ *       <kebab>.service.spec.ts
+ *
+ *   withFiles: false → bare module only:
+ *     src/<kebab>/
+ *       <kebab>.module.ts         (empty @Module — no controller / service)
+ *
+ * In both modes the new module is imported into the nearest parent `*.module.ts`.
  */
 
 import { dirname, join } from 'path';
@@ -24,25 +28,32 @@ const filesDir = join(__dirname, 'files');
 
 export default function moduleFactory(ctx: SchematicContext): Rule[] {
   const { kebabName, pascalName, targetDir, templateVars, options } = ctx;
-  const noSpec = Boolean(options['noSpec']);
-  const srcDir = join('src', kebabName);
+  const noSpec    = Boolean(options['noSpec']);
+  const withFiles = options['withFiles'] !== false; // default: true
+  const srcDir    = join('src', kebabName);
+
+  // Choose the right module template:
+  //   full  → __kebabName__.module.ts.ejs        (has controller + service in @Module)
+  //   bare  → __kebabName__.module.bare.ts.ejs   (empty @Module)
+  const moduleTpl = withFiles
+    ? join(filesDir, '__kebabName__.module.ts.ejs')
+    : join(filesDir, '__kebabName__.module.bare.ts.ejs');
 
   return [
     // ── Module file ────────────────────────────────────────────────────────
-    templateRule(
-      join(filesDir, '__kebabName__.module.ts.ejs'),
-      `${srcDir}/${kebabName}.module.ts`,
-      templateVars,
-    ),
+    templateRule(moduleTpl, `${srcDir}/${kebabName}.module.ts`, templateVars),
 
-    // ── Controller ─────────────────────────────────────────────────────────
-    templateRule(
-      join(filesDir, '__kebabName__.controller.ts.ejs'),
-      `${srcDir}/${kebabName}.controller.ts`,
-      templateVars,
+    // ── Controller (only when withFiles) ───────────────────────────────────
+    ifElse(
+      withFiles,
+      templateRule(
+        join(filesDir, '__kebabName__.controller.ts.ejs'),
+        `${srcDir}/${kebabName}.controller.ts`,
+        templateVars,
+      ),
     ),
     ifElse(
-      !noSpec,
+      withFiles && !noSpec,
       templateRule(
         join(filesDir, '__kebabName__.controller.spec.ts.ejs'),
         `${srcDir}/${kebabName}.controller.spec.ts`,
@@ -50,14 +61,17 @@ export default function moduleFactory(ctx: SchematicContext): Rule[] {
       ),
     ),
 
-    // ── Service ────────────────────────────────────────────────────────────
-    templateRule(
-      join(filesDir, '__kebabName__.service.ts.ejs'),
-      `${srcDir}/${kebabName}.service.ts`,
-      templateVars,
+    // ── Service (only when withFiles) ──────────────────────────────────────
+    ifElse(
+      withFiles,
+      templateRule(
+        join(filesDir, '__kebabName__.service.ts.ejs'),
+        `${srcDir}/${kebabName}.service.ts`,
+        templateVars,
+      ),
     ),
     ifElse(
-      !noSpec,
+      withFiles && !noSpec,
       templateRule(
         join(filesDir, '__kebabName__.service.spec.ts.ejs'),
         `${srcDir}/${kebabName}.service.spec.ts`,
@@ -66,12 +80,12 @@ export default function moduleFactory(ctx: SchematicContext): Rule[] {
     ),
 
     // ── Import this module into the nearest parent module ──────────────────
-    // findNearestModule starts at src/<kebab>/ on disk — the new module
-    // isn't on disk yet, so the search naturally walks up to the parent dir.
+    // findNearestModule walks up from src/<kebab>/ — since the new module
+    // isn't on disk yet, the search naturally finds the parent module.
     moduleUpdateRule(
       join(targetDir, 'src', kebabName),
       `${pascalName}Module`,
-      `./${kebabName}/${kebabName}.module`,
+      `src/${kebabName}/${kebabName}.module`,
       'import',
     ),
   ];

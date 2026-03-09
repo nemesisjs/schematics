@@ -12,7 +12,7 @@
  */
 
 import { readFile } from 'fs/promises';
-import { join } from 'path';
+import { dirname, join, relative } from 'path';
 import ejs from 'ejs';
 import type { SchematicContext } from './context';
 export type { SchematicContext } from './context';
@@ -105,26 +105,37 @@ export function templateDirRule(
  * Find the nearest *.module.ts file walking up from `startDir` and inject
  * an import statement + array entry into its @Module decorator.
  *
- * @param startDir    Directory to start searching from (usually the generated file's dir).
- * @param className   The class name to add (e.g. 'UserController').
- * @param importFrom  The import path relative to the module file (e.g. './user/user.controller').
- * @param arrayType   Which @Module array to update: 'controller' | 'provider' | 'import'.
+ * The import path is computed automatically from the module file's location
+ * to the generated file — so it is always correct regardless of nesting depth.
+ *
+ * @param startDir          Directory to start searching from (the generated file's dir).
+ * @param className         The class name to add (e.g. 'UserController').
+ * @param generatedRelPath  Path of the generated file relative to ctx.targetDir,
+ *                          WITHOUT the .ts extension (e.g. 'src/test/test.controller').
+ * @param arrayType         Which @Module array to update: 'controller' | 'provider' | 'import'.
  */
 export function moduleUpdateRule(
   startDir: string,
   className: string,
-  importFrom: string,
+  generatedRelPath: string,
   arrayType: 'controller' | 'provider' | 'import',
 ): Rule {
-  return async (tree: Tree, _ctx: SchematicContext): Promise<Tree> => {
+  return async (tree: Tree, ctx: SchematicContext): Promise<Tree> => {
     // Locate the nearest module file on disk (it may not be staged in Tree yet)
     const modulePath = await findNearestModule(startDir);
     if (!modulePath) return tree; // no parent module found — skip silently
 
+    // Compute the correct relative import path from the module file to the
+    // generated file — handles any directory depth automatically.
+    const moduleDir = dirname(modulePath);
+    const absGenerated = join(ctx.targetDir, generatedRelPath);
+    let importFrom = relative(moduleDir, absGenerated).replace(/\\/g, '/');
+    if (!importFrom.startsWith('.')) importFrom = './' + importFrom;
+
     // Read from Tree if already staged (e.g. module schematic just created it),
     // otherwise read from disk.
     let content: string;
-    const relModulePath = modulePath.replace(process.cwd() + '/', '');
+    const relModulePath = modulePath.replace(process.cwd() + '/', '').replace(/\\/g, '/');
 
     if (tree.exists(relModulePath)) {
       content = tree.read(relModulePath)!;

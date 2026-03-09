@@ -82,7 +82,7 @@ export default function resourceFactory(ctx: SchematicContext): Rule[] {
     moduleUpdateRule(
       join(targetDir, 'src', kebabName),
       `${pascalName}Module`,
-      `./${kebabName}/${kebabName}.module`,
+      `src/${kebabName}/${kebabName}.module`,
       'import',
     ),
   ];

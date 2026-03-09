@@ -40,7 +40,7 @@ export default function serviceFactory(ctx: SchematicContext): Rule[] {
     moduleUpdateRule(
       join(targetDir, 'src', kebabName),
       `${pascalName}Service`,
-      `./${kebabName}.service`,
+      `src/${kebabName}/${kebabName}.service`,
       'provider',
     ),
   ];
