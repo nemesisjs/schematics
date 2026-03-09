@@ -23,14 +23,14 @@ export default function pipeFactory(ctx: SchematicContext): Rule[] {
 
   return [
     templateRule(
-      join(filesDir, '__kebabName__.pipe.ts.mustache'),
+      join(filesDir, '__kebabName__.pipe.ts.ejs'),
       `${srcDir}/${kebabName}.pipe.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.pipe.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.pipe.spec.ts.ejs'),
         `${srcDir}/${kebabName}.pipe.spec.ts`,
         templateVars,
       ),

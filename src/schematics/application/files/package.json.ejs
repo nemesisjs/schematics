@@ -1,5 +1,5 @@
 {
-  "name": "{{kebabName}}",
+  "name": "<%- kebabName %>",
   "version": "0.1.0",
   "scripts": {
     "dev": "bun --hot src/main.ts",
@@ -13,13 +13,13 @@
     "format:check": "prettier --check 'src/**/*.ts'"
   },
   "dependencies": {
-    "@nemesis-js/common": "^0.1.0",
-    "@nemesis-js/core": "^0.1.0",
-    "@nemesis-js/http": "^0.1.0",
-    "@nemesis-js/platform-bun": "^0.1.0"
+    "@nemesis-js/common": "latest",
+    "@nemesis-js/core": "latest",
+    "@nemesis-js/http": "latest",
+    "@nemesis-js/platform-bun": "latest"
   },
   "devDependencies": {
-    "@nemesis-js/testing": "^0.1.0",
+    "@nemesis-js/testing": "latest",
     "@typescript-eslint/eslint-plugin": "^8.0.0",
     "@typescript-eslint/parser": "^8.0.0",
     "eslint": "^9.0.0",

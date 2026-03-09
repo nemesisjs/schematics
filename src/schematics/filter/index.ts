@@ -23,14 +23,14 @@ export default function filterFactory(ctx: SchematicContext): Rule[] {
 
   return [
     templateRule(
-      join(filesDir, '__kebabName__.filter.ts.mustache'),
+      join(filesDir, '__kebabName__.filter.ts.ejs'),
       `${srcDir}/${kebabName}.filter.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.filter.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.filter.spec.ts.ejs'),
         `${srcDir}/${kebabName}.filter.spec.ts`,
         templateVars,
       ),

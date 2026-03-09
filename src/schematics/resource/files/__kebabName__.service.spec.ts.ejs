@@ -1,11 +1,11 @@
 import { describe, it, expect, beforeAll } from 'bun:test';
-import { {{pascalName}}Service } from './{{kebabName}}.service';
+import { <%- pascalName %>Service } from './<%- kebabName %>.service';
 
-describe('{{pascalName}}Service', () => {
-  let service: {{pascalName}}Service;
+describe('<%- pascalName %>Service', () => {
+  let service: <%- pascalName %>Service;
 
   beforeAll(() => {
-    service = new {{pascalName}}Service();
+    service = new <%- pascalName %>Service();
   });
 
   it('should be defined', () => {

@@ -22,14 +22,14 @@ export default function serviceFactory(ctx: SchematicContext): Rule[] {
   return [
     // ── Generated files ────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.service.ts.mustache'),
+      join(filesDir, '__kebabName__.service.ts.ejs'),
       `${srcDir}/${kebabName}.service.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.service.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.service.spec.ts.ejs'),
         `${srcDir}/${kebabName}.service.spec.ts`,
         templateVars,
       ),

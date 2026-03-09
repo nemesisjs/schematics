@@ -22,14 +22,14 @@ export default function controllerFactory(ctx: SchematicContext): Rule[] {
   return [
     // ── Generated files ────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.controller.ts.mustache'),
+      join(filesDir, '__kebabName__.controller.ts.ejs'),
       `${srcDir}/${kebabName}.controller.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.controller.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.controller.spec.ts.ejs'),
         `${srcDir}/${kebabName}.controller.spec.ts`,
         templateVars,
       ),

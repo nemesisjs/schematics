@@ -1,8 +1,8 @@
 import type { ExceptionFilter, ArgumentsHost } from '@nemesis-js/common';
 
-export class {{pascalName}}Filter implements ExceptionFilter {
+export class <%- pascalName %>Filter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost): void {
     // TODO: implement your exception handling logic here
-    console.error('[{{pascalName}}Filter]', exception);
+    console.error('[<%- pascalName %>Filter]', exception);
   }
 }

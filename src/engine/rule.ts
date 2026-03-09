@@ -13,7 +13,7 @@
 
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import mustache from 'mustache';
+import ejs from 'ejs';
 import type { SchematicContext } from './context';
 export type { SchematicContext } from './context';
 import { Tree } from './tree';
@@ -54,19 +54,20 @@ export function templateRule(
 ): Rule {
   return async (tree: Tree): Promise<Tree> => {
     const source = await readFile(templatePath, 'utf8');
-    const content = mustache.render(source, vars);
+    // Use <%- %> tags (unescaped) — safe for code generation, matches NestJS style
+    const content = ejs.render(source, vars, { escape: String });
     return tree.create(targetPath, content);
   };
 }
 
 /**
- * Render all *.mustache files in a directory into the Tree.
+ * Render all *.ejs files in a directory into the Tree.
  * File names are processed:
- *   - Strip ".mustache" suffix.
+ *   - Strip ".ejs" suffix.
  *   - Replace `__kebabName__` with the actual kebab name.
  *   - Leading-dot names are stored as-is (e.g. "gitignore" → ".gitignore").
  *
- * @param filesDir      Absolute path to the directory containing *.mustache files.
+ * @param filesDir      Absolute path to the directory containing *.ejs files.
  * @param targetDir     Relative path (from project root) where files are written.
  * @param vars          Template variables.
  */
@@ -80,11 +81,11 @@ export function templateDirRule(
 
     for (const entry of entries) {
       const source = await readFile(entry.fullPath, 'utf8');
-      const content = mustache.render(source, vars);
+      const content = ejs.render(source, vars, { escape: String });
 
-      // e.g. "__kebabName__.controller.ts.mustache" → "user.controller.ts"
+      // e.g. "__kebabName__.controller.ts.ejs" → "user.controller.ts"
       const relName = entry.relPath
-        .replace(/\.mustache$/, '')
+        .replace(/\.ejs$/, '')
         .replace(/__kebabName__/g, vars['kebabName'] as string);
 
       // dot-file convention: "gitignore" → ".gitignore"

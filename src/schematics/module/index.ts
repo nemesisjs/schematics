@@ -30,21 +30,21 @@ export default function moduleFactory(ctx: SchematicContext): Rule[] {
   return [
     // ── Module file ────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.module.ts.mustache'),
+      join(filesDir, '__kebabName__.module.ts.ejs'),
       `${srcDir}/${kebabName}.module.ts`,
       templateVars,
     ),
 
     // ── Controller ─────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.controller.ts.mustache'),
+      join(filesDir, '__kebabName__.controller.ts.ejs'),
       `${srcDir}/${kebabName}.controller.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.controller.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.controller.spec.ts.ejs'),
         `${srcDir}/${kebabName}.controller.spec.ts`,
         templateVars,
       ),
@@ -52,14 +52,14 @@ export default function moduleFactory(ctx: SchematicContext): Rule[] {
 
     // ── Service ────────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.service.ts.mustache'),
+      join(filesDir, '__kebabName__.service.ts.ejs'),
       `${srcDir}/${kebabName}.service.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.service.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.service.spec.ts.ejs'),
         `${srcDir}/${kebabName}.service.spec.ts`,
         templateVars,
       ),

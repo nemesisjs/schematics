@@ -31,33 +31,33 @@ export default function resourceFactory(ctx: SchematicContext): Rule[] {
   return [
     // ── DTOs (generated first so the controller/service can import them) ───
     templateRule(
-      join(filesDir, 'dto', 'create-__kebabName__.dto.ts.mustache'),
+      join(filesDir, 'dto', 'create-__kebabName__.dto.ts.ejs'),
       `${srcDir}/dto/create-${kebabName}.dto.ts`,
       templateVars,
     ),
     templateRule(
-      join(filesDir, 'dto', 'update-__kebabName__.dto.ts.mustache'),
+      join(filesDir, 'dto', 'update-__kebabName__.dto.ts.ejs'),
       `${srcDir}/dto/update-${kebabName}.dto.ts`,
       templateVars,
     ),
 
     // ── Module ─────────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.module.ts.mustache'),
+      join(filesDir, '__kebabName__.module.ts.ejs'),
       `${srcDir}/${kebabName}.module.ts`,
       templateVars,
     ),
 
     // ── Controller ─────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.controller.ts.mustache'),
+      join(filesDir, '__kebabName__.controller.ts.ejs'),
       `${srcDir}/${kebabName}.controller.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.controller.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.controller.spec.ts.ejs'),
         `${srcDir}/${kebabName}.controller.spec.ts`,
         templateVars,
       ),
@@ -65,14 +65,14 @@ export default function resourceFactory(ctx: SchematicContext): Rule[] {
 
     // ── Service ────────────────────────────────────────────────────────────
     templateRule(
-      join(filesDir, '__kebabName__.service.ts.mustache'),
+      join(filesDir, '__kebabName__.service.ts.ejs'),
       `${srcDir}/${kebabName}.service.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.service.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.service.spec.ts.ejs'),
         `${srcDir}/${kebabName}.service.spec.ts`,
         templateVars,
       ),

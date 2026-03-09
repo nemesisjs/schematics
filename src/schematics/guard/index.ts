@@ -23,14 +23,14 @@ export default function guardFactory(ctx: SchematicContext): Rule[] {
 
   return [
     templateRule(
-      join(filesDir, '__kebabName__.guard.ts.mustache'),
+      join(filesDir, '__kebabName__.guard.ts.ejs'),
       `${srcDir}/${kebabName}.guard.ts`,
       templateVars,
     ),
     ifElse(
       !noSpec,
       templateRule(
-        join(filesDir, '__kebabName__.guard.spec.ts.mustache'),
+        join(filesDir, '__kebabName__.guard.spec.ts.ejs'),
         `${srcDir}/${kebabName}.guard.spec.ts`,
         templateVars,
       ),
