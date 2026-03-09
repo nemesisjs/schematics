@@ -1,6 +1,6 @@
 {
   "name": "@nemesis-js/schematics",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "NemesisJS code generation schematics — engine + all built-in schematics",
   "author": "NemesisJS",
